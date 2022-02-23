@@ -47,9 +47,9 @@ output application/java
 		<logger level="INFO" doc:name="Logger" doc:id="c76aaa0d-e996-4691-b140-a33c9ef522a8" message="SQS message received" />
 		<choice doc:name="Check the condtions " doc:id="13bf6c4f-991c-44f4-9c24-22e62e83b32e" >
 			<when expression='#[payload == "Pratik"]' >
-				<ee:transform doc:name="Transform Message" doc:id="1f43187a-d9e2-4116-bb9f-fbb1f7746dc2" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+				<ee:transform doc:name="Transform Message" doc:id="e75d40bb-f129-4f19-bca1-a63f4199053a">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -63,10 +63,12 @@ output application/json
     "resultMessage": vars.errorMessage default ' ',
     "result": "Success",
     "endpoint": "/api/first"
+    
+
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-				<logger level="INFO" doc:name="Log success Information to New Relic" doc:id="d090fab5-d4bf-4762-bd62-b713d0e7c01f" message="#[{&#10;    &quot;severity&quot;: &quot;LOW&quot;,&#10;    &quot;eventType&quot;: &quot;InsightsLogs&quot;,&#10;    &quot;env&quot;: &quot;DEV&quot;,&#10;    &quot;messageId&quot;: uuid() as String,&#10;    &quot;muleAppName&quot;: &quot;new-relic-insights&quot;,&#10;    &quot;intgCreationDate&quot;: now() as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.ss'Z'&quot;},&#10;    &quot;payload&quot;: write(payload,'application/json'),&#10;    &quot;resultMessage&quot;: vars.errorMessage default ' ',&#10;    &quot;result&quot;: &quot;Success&quot;,&#10;    &quot;endpoint&quot;: &quot;/api/first&quot;&#10;    &#10;&#10;}]" />
+				<logger level="INFO" doc:name="Log success Information to New Relic" doc:id="d090fab5-d4bf-4762-bd62-b713d0e7c01f" message="#[payload]" />
 			</when>
 			<otherwise >
 				<raise-error doc:name="Raise error for not matching condition" doc:id="1a6c3b79-e7a0-4ac8-a81c-fd3443302bc2" type='"CUSTOM:CUSTOM_ERROR"' description="no maching condition" />

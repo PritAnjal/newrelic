@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
-	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd
-http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<configuration-properties doc:name="Configuration properties" doc:id="043c0ac4-3e77-475c-9be9-6265a6ef1c81" file="config.yaml" />
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="76ed6b89-d44e-4f5a-9215-6683daaaddf7" file="config.yaml" key="Password12345678" />
 <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4e14c59a-d733-4f3e-8053-72dcede9216d" >
@@ -24,7 +25,26 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<configuration doc:name="Configuration" doc:id="311fd02a-7dbc-4e35-82fc-88119fd82f5b" defaultErrorHandler-ref="global_Error_Handler" />
 	<error-handler name="global_Error_Handler">
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="932e3602-231a-4f5c-8d7e-20a91fddd127" type="ANY" >
-			<logger level="INFO" doc:name="Log Error Information to New Relic" doc:id="cf5f9ace-1500-4e25-9caf-75248c153498" message="#[{&#10;    &quot;severity&quot;: &quot;HIGH&quot;,&#10;    &quot;eventType&quot;: &quot;InsightsLogs&quot;,&#10;    &quot;env&quot;: &quot;DEV&quot;,&#10;    &quot;messageId&quot;: uuid() as String,&#10;    &quot;muleAppName&quot;: &quot;new-relic-insights&quot;,&#10;    &quot;intgCreationDate&quot;: now() as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.ss'Z'&quot;},&#10;    &quot;payload&quot;: write(payload,'application/json'),&#10;    &quot;resultMessage&quot;: &quot;Unable to Post the message&quot;,&#10;    &quot;result&quot;: &quot;Error&quot;,&#10;    &quot;endpoint&quot;: &quot;/api/second&quot;&#10;}]" />
+			<ee:transform doc:name="Transform Message" doc:id="a5232c3a-de70-4cf9-aa08-7de07eba522a" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    "severity": "HIGH",
+    "eventType": "InsightsLogs",
+    "env": "DEV",
+    "messageId": uuid() as String,
+    "muleAppName": "new-relic-insights",
+    "intgCreationDate": now() as String {format: "yyyy-MM-dd'T'HH:mm:ss.ss'Z'"},
+    "payload": write(payload,'application/json'),
+    "resultMessage": "Unable to Post the message",
+    "result": "Error",
+    "endpoint": "/api/second"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Log Error Information to New Relic" doc:id="cf5f9ace-1500-4e25-9caf-75248c153498" message="#[payload]" />
 			
 </on-error-propagate>
 		</error-handler>

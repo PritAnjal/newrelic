@@ -8,72 +8,88 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="implementation-suite.xml" />
-	<munit:test name="sendMessageToAWSSQS-test_Success" doc:id="c71bdca4-8d97-42d3-b07e-a11f66e03cac" >
+	<munit:test name="sendMessageToAWSSQS-test_Success1" doc:id="de4bf768-8990-4b28-beff-6db9c98ab4d6" >
 		<munit:behavior >
-			<munit-tools:mock-when doc:name="Mock Check Null payload" doc:id="f366450b-eb7b-41a5-96bb-3bcf0698432a" processor="validation:is-not-null">
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="07ff9d33-77ab-4824-8924-420ae7ce98e8" attributeName="doc:id" />
-				</munit-tools:with-attributes>
-				<munit-tools:then-return >
-					<munit-tools:payload value="#[output application/json --- readUrl('classpath://sendMessageToAWSSQStestSuccess\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
-					<munit-tools:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess\mock_attributes.dwl')]" />
-				</munit-tools:then-return>
-			</munit-tools:mock-when>
-			<munit-tools:mock-when doc:name="Mock Send message to SQS" doc:id="0146bc85-7705-4075-812d-a5c1a668b36d" processor="sqs:send-message">
+			<munit-tools:mock-when doc:name="Mock Send message to SQS" doc:id="72ec21d4-2c9c-4b4f-bca4-2d1a1348c1fd" processor="sqs:send-message">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="936c47d7-d221-408a-9c72-157dfad1ba17" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:payload value="#[output application/java --- readUrl('classpath://sendMessageToAWSSQStestSuccess\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
-					<munit-tools:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess\mock_attributes1.dwl')]" />
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://sendMessageToAWSSQStestSuccess1\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess1\mock_attributes.dwl')]" />
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
-			<munit:set-event doc:name="Set Input" doc:id="20db2560-c3d8-400a-845c-28a0c4c4b16e" >
-				<munit:payload value="#[output application/json --- readUrl('classpath://sendMessageToAWSSQStestSuccess\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
-				<munit:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess\set-event_attributes.dwl')]" />
+			<munit:set-event doc:name="Set Input" doc:id="4799de7f-b470-4a04-aec9-1c62f654c59d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://sendMessageToAWSSQStestSuccess1\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess1\set-event_attributes.dwl')]" />
 			</munit:set-event>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to sendMessageToAWSSQS" doc:id="19024ceb-2a19-4fb0-a64f-6188bbeaa364" name="sendMessageToAWSSQS"/>
+			<flow-ref doc:name="Flow-ref to sendMessageToAWSSQS" doc:id="dc1cda76-4856-4aaf-b1d9-6265b82d3a70" name="sendMessageToAWSSQS"/>
 		</munit:execution>
 		<munit:validation >
-			<munit-tools:assert doc:name="Assert payload" doc:id="ce75dfea-b86d-424f-a176-f7004a5618d4" message="The payload does not match">
+			<munit-tools:assert doc:name="Assert payload" doc:id="01f3f6ff-a9fa-4dd6-8df6-facf7606f29c" message="The payload does not match">
 				<munit-tools:that ><![CDATA[#[%dw 2.0
-import sendMessageToAWSSQStestSuccess::assert_expression_payload
+import sendMessageToAWSSQStestSuccess1::assert_expression_payload
 ---
 assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
 			</munit-tools:assert>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="receiveMessageFromSQSQueue-test_Success" doc:id="1659d2a0-9928-4768-8784-8bfd200d083c" >
-		<munit:behavior >
-			<munit:set-event doc:name="Set Input" doc:id="34405d30-0e31-4af0-8806-e4f89cd4afa4" >
-				<munit:payload value="#[output text/plain --- readUrl('classpath://receiveMessageFromSQSQueuetestSuccess\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="text/plain" />
-				<munit:attributes value="#[readUrl('classpath://receiveMessageFromSQSQueuetestSuccess\set-event_attributes1.dwl')]" />
-			</munit:set-event>
-		</munit:behavior>
-		<munit:execution >
-			<flow-ref doc:name="Flow-ref to receiveMessageFromSQSQueue" doc:id="4dd6a1b0-5721-411d-bc56-0618fe942733" name="receiveMessageFromSQSQueue"/>
-		</munit:execution>
-	</munit:test>
-	<munit:test name="receiveMessageFromSQSQueue-test_Failure" doc:id="b50fa52d-5e9f-4a6c-91e4-58f80763eaa6">
+	<munit:test name="sendMessageToAWSSQS-test_Failure" doc:id="226737f4-17c0-48cc-82da-dc30d1880b2a">
 			<munit:behavior>
-				<munit:set-event doc:name="Set Input" doc:id="dca63366-c50a-4cdd-8d61-4f92447f366a">
-				<munit:payload value='#[output text/json --- {"Name" : "Anjali"}]' encoding="UTF-8" mediaType="text/json" />
-				<munit:attributes value="#[readUrl('classpath://receiveMessageFromSQSQueuetestSuccess\set-event_attributes1.dwl')]" />
+				<munit:set-event doc:name="Set Input" doc:id="f8f79d84-9ad6-4dfa-8252-abe3978a0b8d">
+				<munit:attributes value="#[readUrl('classpath://sendMessageToAWSSQStestSuccess1\set-event_attributes.dwl')]" />
 				</munit:set-event>
 			</munit:behavior>
 			<munit:execution>
-				<flow-ref doc:name="receiveMessageFromSQSQueue" doc:id="29b728cf-bfb4-4179-bb93-a00b1efceee2" name="receiveMessageFromSQSQueue" />
+			<try doc:name="Try" doc:id="00904590-a00a-4d8d-8f69-c8def5251a73" >
+				<flow-ref doc:name="sendMessageToAWSSQS" doc:id="56550606-4d7e-4ce0-a717-10d6d2022318" name="sendMessageToAWSSQS" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a98d18c4-547f-422b-bf62-dc9546f23140" >
+						<logger level="INFO" doc:name="Logger" doc:id="53d93621-0282-47a6-b0a4-9e5ff278a3be" message="continue"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
 			</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f775d649-f281-4d47-a2fe-0309eeb36b86" is='#[MunitTools::equalTo("Error")]' expression="#[payload.result]"/>
+			</munit:validation>
 		</munit:test>
-	<munit:test name="implementation-test-suite-sendMessageToAWSSQSTest_Null_Failure" doc:id="00ade566-8875-422b-9c79-bcdd9ceb7f33" description="Test">
+	<munit:test name="receiveMessageFromSQSQueue-test_Success1" doc:id="f7e254e1-0edd-4f98-8ee1-74882156b996" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="56fbd3e1-505d-4639-a7d6-5139269cd9ee" >
+				<munit:payload value="#[output text/plain --- readUrl('classpath://receiveMessageFromSQSQueuetestSuccess1\set-event_payload.dwl')]" encoding="UTF-8" mediaType="text/plain" />
+				<munit:attributes value="#[readUrl('classpath://receiveMessageFromSQSQueuetestSuccess1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to receiveMessageFromSQSQueue" doc:id="7990614d-958f-4e50-9f22-6ccc591ebac7" name="receiveMessageFromSQSQueue"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="8051a186-6ad6-456b-9111-be503c232b78" expression="#[payload.result]" is='#[MunitTools::equalTo("Success")]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="receiveMessageFromSQSQueue-test_Failure_1" doc:id="21a38542-220a-4611-8104-26f5c9453505">
 			<munit:behavior>
-				<munit:set-event doc:name="Set Event" doc:id="a602b312-44d7-46f5-bb27-1f47f3bdd3c1" />
+				<munit:set-event doc:name="Set Input" doc:id="ea734a24-a731-44b5-a852-fb823b977913">
+					<munit:payload value="#[output text/plain --- readUrl('classpath://receiveMessageFromSQSQueuetestSuccess1\set-event_payload1.dwl')]" encoding="UTF-8" mediaType="text/plain" />
+				<munit:attributes value="#[readUrl('classpath://receiveMessageFromSQSQueuetestSuccess1\set-event_attributes.dwl')]" />
+				</munit:set-event>
 			</munit:behavior>
 			<munit:execution>
-				<flow-ref doc:name="Flow-ref to sendMessageToAWSSQS" doc:id="b5d70977-a1b4-4b74-85f4-7c0363be3d57" name="sendMessageToAWSSQS" />
+			<try doc:name="Try" doc:id="0b42f887-3a0f-4b12-addb-803640e4e371" >
+				<flow-ref doc:name="receiveMessageFromSQSQueue" doc:id="3698070c-b886-4c6f-916a-aa71b085acbf" name="receiveMessageFromSQSQueue" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="29844299-9b00-4276-bcb6-2adaf386aec7" >
+						<logger level="INFO" doc:name="Logger" doc:id="3d2f256a-ba99-45bc-bd80-8836f0547b59" message="continue"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
 			</munit:execution>
+			<munit:validation>
+				<munit-tools:assert-that doc:name="Assert that" doc:id="5f74d00c-d38f-42fd-8595-b9a48a2c6d0b" expression="#[payload.result]" is='#[MunitTools::equalTo("Error")]' />
+			</munit:validation>
 		</munit:test>
 
 
