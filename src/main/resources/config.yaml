@@ -1,0 +1,9 @@
+http:
+  host: "0.0.0.0"
+  port: "8081"
+AWS:
+  secret-key: "![RJ5ZpqwOSLvE7HZtRffr6OGnScOGzR+3aJsETuzuyfo31DF5CBZxXaDTApmIxckJ]"
+  access-key: "![8kV9clxC+QR/WxZ4ipVr8xLUPPi9iBADYktwjqLjX1M=]"
+NEWRELIC:
+  host: "![nkTEVavLt1SleSiZ2uobNoo1xjEMgxSKr7V/3t5lx5kNmDoPa4gsFFkUM/JalMZv]"
+  header-key: "![C0d7lMUVm8vHSyVuXU3N5ov0vzIyhZhD2642talXvQ9ZYo5sjXCXPBZbHCgSQrdy]"
