@@ -24,27 +24,8 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<configuration doc:name="Configuration" doc:id="311fd02a-7dbc-4e35-82fc-88119fd82f5b" defaultErrorHandler-ref="global_Error_Handler" />
 	<error-handler name="global_Error_Handler">
 			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="932e3602-231a-4f5c-8d7e-20a91fddd127" type="ANY" >
-				<set-payload value="#[{
-&#10;    &quot;severity&quot;: &quot;HIGH&quot;,
-&#10;    &quot;eventType&quot;: &quot;InsightsLogs&quot;,
-&#10;    &quot;env&quot;: &quot;DEV&quot;,
-&#10;    &quot;messageId&quot;: uuid() as String,
-&#10;    &quot;muleAppName&quot;: &quot;new-relic-insights&quot;,
-&#10;    &quot;intgCreationDate&quot;: now() as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.ss'Z'&quot;},
-&#10;    &quot;payload&quot;: write(payload,'application/json'),
-&#10;    &quot;resultMessage&quot;: &quot;Unable to Post the message&quot;,
-&#10;    &quot;result&quot;: &quot;Error&quot;,
-&#10;    &quot;endpoint&quot;: &quot;/api/second&quot;
-&#10;    
-&#10;}]" doc:name="Set Payload" doc:id="ce2931fd-9e79-45b7-a6f4-2ea0212a98b7" />
-				<set-variable value="NRII-9hAL1UkgtjUL_IXNCcEV0oUdHPWt2w2L" doc:name="Set Variable" doc:id="2109152e-7ac8-462e-8c86-ee7fb3946422" variableName="headerkey" />
-				<http:request method="POST" doc:name="Request" doc:id="2bf7e8ad-d2e4-463d-8d6a-55f48dc70105" config-ref="HTTP_Request_configuration" path="/v1/accounts/3424915/events" >
-					<http:headers ><![CDATA[#[output application/java
----
-{
-	"X-Insert-Key" : vars.headerkey
-}]]]></http:headers>
-				</http:request>
-			</on-error-propagate>
+			<logger level="INFO" doc:name="Log Error Information to New Relic" doc:id="cf5f9ace-1500-4e25-9caf-75248c153498" message="#[{&#10;    &quot;severity&quot;: &quot;HIGH&quot;,&#10;    &quot;eventType&quot;: &quot;InsightsLogs&quot;,&#10;    &quot;env&quot;: &quot;DEV&quot;,&#10;    &quot;messageId&quot;: uuid() as String,&#10;    &quot;muleAppName&quot;: &quot;new-relic-insights&quot;,&#10;    &quot;intgCreationDate&quot;: now() as String {format: &quot;yyyy-MM-dd'T'HH:mm:ss.ss'Z'&quot;},&#10;    &quot;payload&quot;: write(payload,'application/json'),&#10;    &quot;resultMessage&quot;: &quot;Unable to Post the message&quot;,&#10;    &quot;result&quot;: &quot;Error&quot;,&#10;    &quot;endpoint&quot;: &quot;/api/second&quot;&#10;}]" />
+			
+</on-error-propagate>
 		</error-handler>
 </mule>
